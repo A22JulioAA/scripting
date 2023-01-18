@@ -42,7 +42,27 @@ function mostrarFicheiros(){
 }
 
 function comprobarFicheiro(){
-    mostrarFicheiros
+    sair1=0
+
+    while (( $sair1 == 0 ))
+    do
+        echo Introduce a ruta na que queiras buscar o arquivo: 
+        read -p "$HOME/" ruta
+        read -p Introduce o noe do ficheiro: 
+        
+        clear
+        if [ -d $HOME/$ruta ]
+        then
+            for ficheiro in $HOME/$ruta/*
+            do
+                if [ -e $ficheiro ]
+                then
+                    echo O ficheiro $ficheiro
+            done
+        else
+            echo Non existe o directorio seleccionado
+        fi 
+    done
 }
 
 #Función para entrar nunha páxina web
