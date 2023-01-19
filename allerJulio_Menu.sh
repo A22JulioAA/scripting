@@ -8,12 +8,25 @@ clear
 #Declarar a variable de saída do programa
 exit=0
 
+#Función para solicitar información de salida
+function salir(){
+    echo Para saír pulsa 0...
+        read -r num
+
+        if [ $num == 0 ]
+        then
+            clear
+            sair1=$num
+        fi
+        clear
+}
+
 #Función para listar os elementos dun directorio seleccionado polo usuario partindo do directorio HOME
 function mostrarFicheiros(){
     clear 
-    sair1=0
+    sair1=1
 
-    while (( sair1 == 0 ))
+    while (( sair1 != 0 ))
     do
         echo Introduce a ruta que queiras listar: 
         read -p "$HOME/" ruta
@@ -28,27 +41,21 @@ function mostrarFicheiros(){
             echo Non existe o directorio seleccionado
         fi
 
-        echo Para saír pulsa 0...
-        read num
-
-        if [ $num == 0 ]
-        then
-            clear
-            sair1=1
-        else
-            pass
-        fi
+        salir
     done
 }
 
 function comprobarFicheiro(){
-    sair1=0
 
-    while (( $sair1 == 0 ))
+    sair1=1
+
+    clear
+
+    while (( $sair1 != 0 ))
     do
         echo Introduce a ruta na que queiras buscar o arquivo: 
         read -p "$HOME/" ruta
-        read -p Introduce o noe do ficheiro: 
+        read -p "Introduce o nome do ficheiro: " nomeFicheiro
         
         clear
         if [ -d $HOME/$ruta ]
@@ -57,11 +64,123 @@ function comprobarFicheiro(){
             do
                 if [ -e $ficheiro ]
                 then
-                    echo O ficheiro $ficheiro
+                    if [ $ficheiro == $nomeFicheiro ]
+                    then
+                        echo $nomeFicheiro existe en el direcctorio $HOME/$ruta
+                    else
+                        echo $nomeFicheiro NO existe en el directorio $HOME/$ruta
+                    fi
+                fi
             done
         else
             echo Non existe o directorio seleccionado
         fi 
+
+        salir
+    done
+}
+
+#Función para ver información de sistema WINDOWS
+function infoWindows(){
+
+    sair1=1;
+
+    clear
+
+    while (( $sair1 != 0 ))
+    do
+        echo A continuación se mostrará la información de sistema Windows
+        echo "1-Procesador"
+        echo "2-Propiedad de..."
+        echo "3-Id. Producto"
+        echo "4-Fabricante"
+        echo "5-Tipo de sistema"
+        echo "6-Modelo"
+        echo "7-Memoria Física(MB)"
+        echo "8-Tarjetas de red"
+        read -p "A qué elemento quiere acceder?" elemento
+
+        case $elemento in
+            1)
+            systeminfo | FIND "Procesador(es)"
+            ;;
+            2)
+            systeminfo | FIND "Propiedad de"
+            ;;
+            3)
+            systeminfo | FIND "Id. del producto"
+            ;;
+            4)
+            systeminfo | FIND "Fabricante del sistema operativo"
+            ;;
+            5)
+            systeminfo | FIND "Tipo de sistema"
+            ;;
+            6)
+            systeminfo | FIND "Modelo el sistema"
+            ;;
+            7)
+            systeminfo | FIND "Cantidad total de memoria física" 
+            ;;
+            8)
+            systeminfo | FIND "Tarjeta(s) de red" 
+            ;;       
+        esac
+
+        salir
+        
+    done
+}
+
+#Función para ver información de sistema LINUX
+function infoLinux(){
+
+    sair1=1;
+
+    clear
+
+    while (( $sair1 != 0 ))
+    do
+        echo A continuación se mostrará la información de sistema Linux
+        echo "1-Procesador"
+        echo "2-Nombre del Sistema Operativo"
+        echo "3-CPU(s)"
+        echo "4-Fabricante"
+        echo "5-Tipo de sistema"
+        echo "6-Modelo"
+        echo "7-Memoria Física(MB)"
+        echo "8-Tarjetas de red"
+        read -p "A qué elemento quiere acceder?" elemento
+
+        case $elemento in
+            1)
+            lscpu | grep "Nombre del modelo"
+            ;;
+            2)
+            lscpu | grep "Nombre del modelo" 
+            ;;
+            3)
+            lscpu | grep "CPU(s)"
+            ;;
+            4)
+            lscpu | grep "ID de fabricante"
+            ;;
+            5)
+            lscpu | grep "Arquitectura"
+            ;;
+            6)
+            lscpu | grep "Modelo"
+            ;;
+            7)
+            vmstat -s -S M
+            ;;
+            8)
+            lspci
+            ;;       
+        esac
+
+        salir
+        
     done
 }
 
@@ -135,12 +254,13 @@ function mostrarOpcions(){
     clear
     
     echo Selecciona a opción:
-    echo 1- Mostrar ficheiros dentro do directorio seleccionado
+    echo "1- Mostrar ficheiros dentro do directorio seleccionado"
     echo 2- Comprobar se existe un ficheiro na ruta
-    echo 3- 
-    echo 4- Acceder a páxina web
-    echo 5- Calculadora
-    echo 6- Saír
+    echo 3- Ver información de sistema Windows
+    echo 4- Ver información de sistema Linux
+    echo 5- Acceder a páxina web
+    echo 6- Calculadora
+    echo 7- Saír
 }
 
 #Función para seleccionar a opción que usa un CASE para estructurar as diferentes opciones
@@ -155,16 +275,19 @@ function seleccionarOpcion(){
     comprobarFicheiro
     ;;
     3)
-    pass
+    infoWindows
     ;;
     4)
-    accederPaxina
+    infoLinux
     ;;
     5)
+    accederPaxina
+    ;;
+    6)
     calculadora
     echo $?
     ;;
-    6)
+    7)
     saida
     ;;
 
