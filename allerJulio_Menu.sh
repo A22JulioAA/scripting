@@ -8,6 +8,9 @@ clear
 #Declarar a variable de saída do programa
 exit=0
 
+echo "Hola Gerardo!"
+sleep 1s
+
 #Función para solicitar información de salida
 function salir(){
     echo Para saír pulsa 0...
@@ -82,7 +85,10 @@ function infoWindows(){
 
     while (( $sair1 != 0 ))
     do
-        echo A continuación se mostrará la información de sistema Windows
+        echo ----------------------------------------------------
+        echo "|Sección en mantemento, desculpe as molestias :) <3|"
+        echo ----------------------------------------------------
+        echo A continuación se mostrará la información de sistema Windows:
         echo "1-Procesador"
         echo "2-Propiedad de..."
         echo "3-Id. Producto"
@@ -95,12 +101,13 @@ function infoWindows(){
 
         case $elemento in
             1)
+            
             systeminfo | FIND "Procesador(es)"
             ;;
             2)
             systeminfo | FIND "Propiedad de"
             ;;
-            3)
+            3) 
             systeminfo | FIND "Id. del producto"
             ;;
             4)
@@ -112,7 +119,7 @@ function infoWindows(){
             6)
             systeminfo | FIND "Modelo el sistema"
             ;;
-            7)
+            7)  
             systeminfo | FIND "Cantidad total de memoria física" 
             ;;
             8)
@@ -134,7 +141,7 @@ function infoLinux(){
 
     while (( $sair1 != 0 ))
     do
-        echo A continuación se mostrará la información de sistema Linux
+        echo A continuación se mostrará la información de sistema Linux:
         echo "1-Procesador"
         echo "2-Nombre del Sistema Operativo"
         echo "3-CPU(s)"
@@ -247,6 +254,49 @@ function calculadora(){
     done  
 }
 
+#Función para crear arquivos de texto
+function cambiarUsuario(){
+    sair1=1
+
+    clear
+
+    while(( $sair1 != 0 ))
+    do
+
+        echo El nombre actual de usuario es $USERNAME
+        read -p "Nuevo nombre: " nuevoNombre
+
+        USERNAME=$nuevoNombre
+
+        echo Nombre actualizado!
+        echo ------------------------------
+        echo Nuevo nombre: $USERNAME
+
+        read -p "Quiere actualizar también la contraseña?(s/n)" passw
+
+        if [ $passw == "s" ]
+        then
+            read -sp "Introduce la nueva contraseña: " con1
+            echo 
+            read -sp "Vuelve a introducir la contraseña: " con2
+            echo
+
+            if [ $con1 == $con2 ] 
+            then
+                echo ------------------------------
+                echo Contraseña actualizada!
+                echo ------------------------------
+            else
+                echo Las contraseñas no son iguales
+            fi   
+        else
+            echo La contraseña no será actualiada     
+        fi
+
+        salir
+    done
+}
+
 #Función para decidir se continuar no programa ou saír
 function saida(){
     clear
@@ -257,19 +307,20 @@ function saida(){
 
 #función para amosar as opcións que se lle ofrecen ao usuario
 function mostrarOpcions(){
-    #Mensaje inicial e limpeza de consola antes de iniciar a selección de opcións
-    echo Hola Gerardo!
-    sleep 1s
+    #Limpeza de consola antes de iniciar a selección de opcións
     clear
     
-    echo Selecciona a opción:
-    echo "1- Mostrar ficheiros dentro do directorio seleccionado"
-    echo 2- Comprobar se existe un ficheiro na ruta
-    echo 3- Ver información de sistema Windows
-    echo 4- Ver información de sistema Linux
-    echo 5- Acceder a páxina web
-    echo 6- Calculadora
-    echo 7- Saír
+    echo ----------------------------------------------------------
+    echo "|Selecciona a opción:                                    |"
+    echo "|1- Mostrar ficheiros dentro do directorio seleccionado  |"
+    echo "|2- Comprobar se existe un ficheiro na ruta              |"
+    echo "|3- Ver información de sistema Windows                   |"
+    echo "|4- Ver información de sistema Linux                     |"
+    echo "|5- Acceder a páxina web                                 |"
+    echo "|6- Calculadora                                          |"
+    echo "|7- Cambiar nombre de usuario                            |"
+    echo "|8- Saír                                                 |"
+    echo ----------------------------------------------------------
 }
 
 #Función para seleccionar a opción que usa un CASE para estructurar as diferentes opciones
@@ -297,6 +348,9 @@ function seleccionarOpcion(){
     echo $?
     ;;
     7)
+    cambiarUsuario
+    ;;
+    8)
     saida
     ;;
 
@@ -316,5 +370,7 @@ do
 done
 
 echo O programa finalizou correctamente
+
+
 
 
