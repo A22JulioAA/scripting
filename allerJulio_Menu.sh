@@ -60,22 +60,15 @@ function comprobarFicheiro(){
         clear
         if [ -d $HOME/$ruta ]
         then
-            for ficheiro in $HOME/$ruta/*
-            do
-                if [ -e $ficheiro ]
-                then
-                    if [ $ficheiro == $nomeFicheiro ]
-                    then
-                        echo $nomeFicheiro existe en el direcctorio $HOME/$ruta
-                    else
-                        echo $nomeFicheiro NO existe en el directorio $HOME/$ruta
-                    fi
-                fi
-            done
+            if [ -e $HOME/$ruta/$nomeFicheiro ]
+            then
+                echo O ficheiro $nomeFicheiro existe na ruta $HOME/$ruta
+            else
+                echo O ficheiro $nomeFicheiro NON existe na ruta $HOME/$ruta
+            fi
         else
             echo Non existe o directorio seleccionado
         fi 
-
         salir
     done
 }
@@ -194,9 +187,9 @@ function accederPaxina(){
    
    if [ $incognito == "s" ]
    then
-    start chrome /incognito www.$paxina.es
+    Start chrome /incognito www.$paxina.es
    else
-   start chrome www.$paxina.es
+    Start chrome www.$paxina.es
    fi
 }
 
