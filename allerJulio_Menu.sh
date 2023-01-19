@@ -179,56 +179,72 @@ function infoLinux(){
 
 #Función para entrar nunha páxina web
 function accederPaxina(){
+
+    sair1=1;
+
     clear
 
-    read -p "Introduce a páxina á que queres acceder: " paxina
+    while (( $sair1 != 0 ))
+    do
 
-    read -p "Desexa entrar á páxina en incógnito?(s/n)" incognito
-   
-   if [ $incognito == "s" ]
-   then
-    Start chrome /incognito www.$paxina.es
-   else
-    Start chrome www.$paxina.es
-   fi
+        read -p "Introduce a páxina á que queres acceder: " paxina
+
+        read -p "Desexa entrar á páxina en incógnito?(s/n)" incognito
+    
+        if [ $incognito == "s" ]
+        then
+            Start chrome /incognito www.$paxina.es
+        else
+            Start chrome www.$paxina.es
+        fi
+
+        salir
+    done
 }
 
 #Función calculadora para operar con 2 números 
 function calculadora(){
-    clear
-    echo "Benvido á CALCULADORA"
-    echo "-Suma(+)"
-    echo "-Resta(-)"
-    echo "-Multiplicación(*)"
-    echo "-División(/)"
-    read -p "Introduce a operación que queiras realizar:" opcion
-    
-    read -p "Introduce el primer número: " num1
-    read -p "Introduce el segundo número: " num2
 
-    case $opcion in
-        "+")
-        return $(($num1+$num2))
+    sair1=1;
+
+    clear
+
+    while (( $sair1 != 0 ))
+    do
+        echo "Benvido á CALCULADORA"
+        echo "-Suma(+)"
+        echo "-Resta(-)"
+        echo "-Multiplicación(*)"
+        echo "-División(/)"
+        read -p "Introduce a operación que queiras realizar:" opcion
         
-        ;;
-        "-")
-        return $(($num1-$num2))
-        
-        ;;
-        "*")
-        return $(($num1*$num2))
-        
-        ;;
-        "/")
-        if [ $num2 == 0 ]
-        then
-            echo Non se pode dividir entre 0
-        else
-            return $(($num1/$num2))
-        fi
-        ;;
-    esac
-    
+        read -p "Introduce el primer número: " num1
+        read -p "Introduce el segundo número: " num2
+
+        case $opcion in
+            "+")
+            echo $(($num1+$num2))
+            
+            ;;
+            "-")
+            echo $(($num1-$num2))
+            
+            ;;
+            "*")
+            echo $(($num1*$num2))
+            
+            ;;
+            "/")
+            if [ $num2 == 0 ]
+            then
+                echo Non se pode dividir entre 0
+            else
+                echo $(($num1/$num2))
+            fi
+            ;;
+        esac
+        salir
+    done  
 }
 
 #Función para decidir se continuar no programa ou saír
